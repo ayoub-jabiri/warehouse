@@ -3,10 +3,12 @@
 @plugin "daisyui";
 
 :root {
+    --bg-color: #f7f9fb;
 }
 
 body {
     font-family: "Open Sans", sans-serif;
+    background-color: var(--bg-color);
 }
 
 .container {
