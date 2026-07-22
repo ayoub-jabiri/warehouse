@@ -1,5 +1,8 @@
 import { userSchema } from "@/app/_back-end/_schemas/user.schema";
-import { registerUser } from "@/app/_back-end/_services/auth.service";
+import {
+    findUserByEmail,
+    registerUser,
+} from "@/app/_back-end/_services/auth.service";
 import { dbConnect } from "@/app/_lib/db";
 import { internalError } from "@/app/_lib/internalError";
 import { NextResponse } from "next/server";
@@ -12,6 +15,14 @@ export async function POST(req: Request) {
 
     try {
         userSchema.parse({ fullname, email, password, passwordConfirm });
+
+        const existingUser = await findUserByEmail(email);
+        if (existingUser) {
+            return NextResponse.json(
+                { message: "User with this email already exists" },
+                { status: 400 }
+            );
+        }
 
         const user = await registerUser({ fullname, email, password });
 
