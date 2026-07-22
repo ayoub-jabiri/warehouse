@@ -1,3 +1,5 @@
+import AppHeader from "../_components/layout/AppHeader";
+
 export default function DashboardLayout({
     children,
 }: {
@@ -5,7 +7,7 @@ export default function DashboardLayout({
 }) {
     return (
         <div>
-            <h1>Dashboard layout</h1>
+            <AppHeader />
             <main className="px-10">{children}</main>
         </div>
     );
