@@ -3,16 +3,22 @@ import { RiExchangeFundsLine } from "@remixicon/react";
 import { useSession } from "next-auth/react";
 
 export default function Dashboard() {
-    const session = useSession();
+    const { data, status } = useSession();
 
-    console.log(session);
+    if (status === "loading") {
+        return (
+            <div className="h-[calc(100vh-60px)] flex justify-center items-center">
+                <p>Loading...</p>
+            </div>
+        );
+    }
 
     return (
         <div className=" py-8 inline-flex flex-col justify-start items-start gap-y-8">
             <section className="self-stretch flex flex-col justify-start items-start gap-2">
                 <div className="self-stretch flex flex-col justify-start items-start">
                     <h1 className="self-stretch justify-center text-zinc-900 text-5xl font-bold leading-[56px]">
-                        Welcome back, John!
+                        Welcome back, {data?.user?.name}
                     </h1>
                 </div>
                 <div className="flex flex-col justify-start items-start">
@@ -36,7 +42,7 @@ export default function Dashboard() {
                         <div className="size- inline-flex flex-col justify-start items-start gap-1">
                             <div className="self-stretch flex flex-col justify-start items-start">
                                 <div className="justify-center text-zinc-900 text-2xl font-semibold leading-8">
-                                    John Doe
+                                    {data?.user?.name}
                                 </div>
                             </div>
                             <div className="size- px-2 py-0.5 bg-rose-200/30 inline-flex justify-start items-start">
@@ -55,7 +61,7 @@ export default function Dashboard() {
                             </div>
                             <div className="self-stretch flex flex-col justify-start items-start">
                                 <div className="self-stretch justify-center text-zinc-900 text-base font-normal leading-6">
-                                    john@example.com
+                                    {data?.user?.email}
                                 </div>
                             </div>
                         </div>

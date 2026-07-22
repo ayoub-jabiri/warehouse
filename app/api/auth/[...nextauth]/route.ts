@@ -39,7 +39,7 @@ export const authOptions: AuthOptions = {
 
                 return {
                     id: user.id,
-                    fullname: user.fullname,
+                    name: user.fullname,
                     email: user.email,
                 };
             },

@@ -1,8 +1,10 @@
 "use client";
 import { type NavLink } from "@/app/_types/NavLink";
 import { RiLogoutBoxRLine } from "@remixicon/react";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { redirect, usePathname } from "next/navigation";
+import { signOut } from "next-auth/react";
 
 export default function AppHeader() {
     const pathname = usePathname();
@@ -18,6 +20,13 @@ export default function AppHeader() {
             link.isActive = true;
         }
     });
+
+    const { data, status } = useSession();
+
+    async function handleLogout() {
+        await signOut({ redirect: false });
+        redirect("/login");
+    }
 
     return (
         <header className="bg-black">
@@ -56,31 +65,34 @@ export default function AppHeader() {
                     </ul>
                 </div>
                 <div className="size- flex justify-start items-center gap-4">
-                    <div className="size- flex flex items-ceneter gap-3">
-                        <div className="size- flex flex-col justify-center items-end">
-                            <div className="size- flex flex-col justify-start items-start">
-                                <div className="justify-center text-white text-sm font-bold leading-5 tracking-tight">
-                                    John Doe
+                    {status === "authenticated" && (
+                        <div className="size- flex flex items-ceneter gap-3">
+                            <div className="size- flex flex-col justify-center items-end">
+                                <div className="size- flex flex-col justify-start items-start">
+                                    <div className="justify-center text-white text-sm font-bold leading-5 tracking-tight">
+                                        {data?.user?.name}
+                                    </div>
+                                </div>
+                                <div className="size- opacity-70 flex flex-col justify-start items-start">
+                                    <div className="justify-center text-white text-xs font-medium leading-4 tracking-wide">
+                                        {data?.user?.email}
+                                    </div>
                                 </div>
                             </div>
-                            <div className="size- opacity-70 flex flex-col justify-start items-start">
-                                <div className="justify-center text-white text-xs font-medium leading-4 tracking-wide">
-                                    john@example.com
+                            <div className="avatar">
+                                <div className="ring-primary ring-offset-base-100 w-10 rounded-full ring-2 ring-offset-2">
+                                    <img src="https://img.daisyui.com/images/profile/demo/spiderperson@192.webp" />
                                 </div>
                             </div>
+                            <button
+                                className="text-white text-sm font-medium leading-5 tracking-tight cursor-pointer"
+                                title="Log out"
+                                onClick={handleLogout}
+                            >
+                                <RiLogoutBoxRLine />
+                            </button>
                         </div>
-                        <div className="avatar">
-                            <div className="ring-primary ring-offset-base-100 w-10 rounded-full ring-2 ring-offset-2">
-                                <img src="https://img.daisyui.com/images/profile/demo/spiderperson@192.webp" />
-                            </div>
-                        </div>
-                        <button
-                            className="text-white text-sm font-medium leading-5 tracking-tight cursor-pointer"
-                            title="Log out"
-                        >
-                            <RiLogoutBoxRLine />
-                        </button>
-                    </div>
+                    )}
                 </div>
             </div>
         </header>

@@ -3,6 +3,8 @@ import { RiArrowRightLongLine } from "@remixicon/react";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
 import { useState } from "react";
+import { redirect } from "next/navigation";
+import AlertPopup from "@/app/_components/layout/global/AlertPopup";
 
 export default function Login() {
     const [formData, setFormData] = useState<{
@@ -12,6 +14,7 @@ export default function Login() {
         email: "",
         password: "",
     });
+    const [errorMessage, setErrorMessage] = useState<null | string>(null);
 
     function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
         const { name, value } = e.target;
@@ -25,11 +28,18 @@ export default function Login() {
         e.preventDefault();
 
         const result = await signIn("credentials", {
-            redirect: true,
+            redirect: false,
             callbackUrl: "/dashboard",
             email: formData.email,
             password: formData.password,
         });
+        console.log(result);
+
+        if (result?.ok) {
+            redirect("/dashboard");
+        }
+
+        setErrorMessage(result!.error || "Something went wrong!");
     }
 
     return (
@@ -119,6 +129,13 @@ export default function Login() {
                     </div>
                 </form>
             </div>
+            {errorMessage && (
+                <AlertPopup
+                    isSuccess={false}
+                    message={errorMessage}
+                    setMessage={setErrorMessage}
+                />
+            )}
         </div>
     );
 }
