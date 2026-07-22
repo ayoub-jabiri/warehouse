@@ -1,6 +1,12 @@
+"use client";
 import { RiExchangeFundsLine } from "@remixicon/react";
+import { useSession } from "next-auth/react";
 
 export default function Dashboard() {
+    const session = useSession();
+
+    console.log(session);
+
     return (
         <div className=" py-8 inline-flex flex-col justify-start items-start gap-y-8">
             <section className="self-stretch flex flex-col justify-start items-start gap-2">
