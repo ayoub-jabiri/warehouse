@@ -1,7 +1,37 @@
+"use client";
 import { RiArrowRightLongLine } from "@remixicon/react";
 import Link from "next/link";
+import { signIn } from "next-auth/react";
+import { useState } from "react";
 
 export default function Login() {
+    const [formData, setFormData] = useState<{
+        email: string;
+        password: string;
+    }>({
+        email: "",
+        password: "",
+    });
+
+    function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
+        const { name, value } = e.target;
+        setFormData((prevData) => ({
+            ...prevData,
+            [name]: value,
+        }));
+    }
+
+    async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+        e.preventDefault();
+
+        const result = await signIn("credentials", {
+            redirect: true,
+            callbackUrl: "/dashboard",
+            email: formData.email,
+            password: formData.password,
+        });
+    }
+
     return (
         <div className="w-96 max-w-96 inline-flex flex-col justify-start items-start gap-8">
             <div className="self-stretch flex flex-col justify-start items-center gap-1">
@@ -24,7 +54,10 @@ export default function Login() {
                         </p>
                     </div>
                 </div>
-                <div className="self-stretch flex flex-col justify-start items-start gap-4">
+                <form
+                    onSubmit={handleSubmit}
+                    className="self-stretch flex flex-col justify-start items-start gap-4"
+                >
                     <div className="self-stretch flex flex-col justify-start items-start gap-1">
                         <fieldset className="w-full">
                             <legend className="fieldset-legend">
@@ -35,6 +68,8 @@ export default function Login() {
                                 className="input w-full bg-gray-100"
                                 placeholder="Enter your email address"
                                 name="email"
+                                value={formData.email}
+                                onChange={handleInputChange}
                             />
                         </fieldset>
                     </div>
@@ -48,6 +83,8 @@ export default function Login() {
                                 className="input w-full bg-gray-100"
                                 placeholder="Enter your password"
                                 name="password"
+                                value={formData.password}
+                                onChange={handleInputChange}
                             />
                         </fieldset>
                     </div>
@@ -80,7 +117,7 @@ export default function Login() {
                             </Link>
                         </div>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
     );
