@@ -7,6 +7,7 @@ import { dbConnect } from "@/app/_lib/db";
 import { internalError } from "@/app/_lib/internalError";
 import { NextResponse } from "next/server";
 import z from "zod";
+import bcrypt from "bcrypt";
 
 export async function POST(req: Request) {
     await dbConnect();
@@ -24,7 +25,13 @@ export async function POST(req: Request) {
             );
         }
 
-        const user = await registerUser({ fullname, email, password });
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        const user = await registerUser({
+            fullname,
+            email,
+            password: hashedPassword,
+        });
 
         return NextResponse.json(
             { message: "User registered successfully", user },
