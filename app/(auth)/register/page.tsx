@@ -7,6 +7,13 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { useState } from "react";
 
+interface FormErrors {
+    fullname?: { error: string };
+    email?: { error: string };
+    password?: { error: string };
+    passwordConfirm?: { error: string };
+}
+
 export default function Register() {
     const [formData, setFormData] = useState<UserI>({
         fullname: "",
@@ -15,6 +22,7 @@ export default function Register() {
         passwordConfirm: "",
     });
     const [errorMessage, setErrorMessage] = useState<null | string>(null);
+    const [formErrors, setFormErros] = useState<FormErrors | null>(null);
 
     function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
         const { name, value } = e.target;
@@ -30,11 +38,24 @@ export default function Register() {
         let success: boolean = false;
 
         try {
+            console.log(formData);
             const { data } = await axios.post("/api/auth/register", formData);
 
             success = true;
         } catch (error) {
             console.log(error.response);
+
+            if (error.response?.data?.errors) {
+                const errors: FormErrors = {};
+
+                error.response?.data?.errors.map((error) => {
+                    errors[error.path[0]] = {
+                        error: error.message,
+                    };
+                });
+
+                setFormErros(errors);
+            }
 
             setErrorMessage(
                 error.response?.data?.message || "Something went wrong!"
@@ -45,6 +66,8 @@ export default function Register() {
             redirect("/login");
         }
     }
+
+    console.log(formErrors);
 
     return (
         <div className=" bg-white rounded-sm shadow-[0px_1px_2px_0px_rgba(0,0,0,0.05)] outline outline-1 outline-offset-[-1px] outline-neutral-300 inline-flex flex-col justify-start items-start overflow-hidden">
@@ -78,6 +101,10 @@ export default function Register() {
                             value={formData.fullname}
                             onChange={handleChange}
                         />
+                        <p className="text-[#F44336] text-sm mt-2">
+                            {formErrors?.fullname &&
+                                `* ${formErrors.fullname.error}`}
+                        </p>
                     </fieldset>
                 </div>
                 <div className="self-stretch flex flex-col justify-start items-start gap-1">
@@ -93,6 +120,9 @@ export default function Register() {
                             value={formData.email}
                             onChange={handleChange}
                         />
+                        <p className="text-[#F44336] text-sm mt-2">
+                            {formErrors?.email && `* ${formErrors.email.error}`}
+                        </p>
                     </fieldset>
                 </div>
                 <div className="self-stretch flex flex-col justify-start items-start gap-1">
@@ -106,6 +136,10 @@ export default function Register() {
                             value={formData.password}
                             onChange={handleChange}
                         />
+                        <p className="text-[#F44336] text-sm mt-2">
+                            {formErrors?.password &&
+                                `* ${formErrors.password.error}`}
+                        </p>
                     </fieldset>
                 </div>
                 <div className="self-stretch flex flex-col justify-start items-start gap-1">
@@ -121,6 +155,10 @@ export default function Register() {
                             value={formData.passwordConfirm}
                             onChange={handleChange}
                         />
+                        <p className="text-[#F44336] text-sm mt-2">
+                            {formErrors?.passwordConfirm &&
+                                `* ${formErrors.passwordConfirm.error}`}
+                        </p>
                     </fieldset>
                 </div>
 

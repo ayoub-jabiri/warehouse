@@ -24,10 +24,6 @@ export const authOptions: AuthOptions = {
                     throw new Error("No user found with this email");
                 }
 
-                console.log(user);
-
-                console.log(credentials.password, user.password);
-
                 const isPasswordValid = await bcrypt.compare(
                     credentials.password,
                     user.password
