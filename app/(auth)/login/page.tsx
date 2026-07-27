@@ -67,6 +67,7 @@ export default function Login() {
                 <form
                     onSubmit={handleSubmit}
                     className="self-stretch flex flex-col justify-start items-start gap-4"
+                    aria-label="Login Form"
                 >
                     <div className="self-stretch flex flex-col justify-start items-start gap-1">
                         <fieldset className="w-full">
