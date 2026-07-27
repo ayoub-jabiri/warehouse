@@ -9,8 +9,8 @@ import { signOut } from "next-auth/react";
 export default function AppHeader() {
     const pathname = usePathname();
     const navLinks = [
-        { title: "Inventory", href: "/dashboard", isActive: false },
-        { title: "Shipments", href: "/shipments", isActive: false },
+        { title: "Dashboard", href: "/dashboard", isActive: false },
+        { title: "Products", href: "/products", isActive: false },
         { title: "Orders", href: "/orders", isActive: false },
         { title: "Reports", href: "/reports", isActive: false },
     ];

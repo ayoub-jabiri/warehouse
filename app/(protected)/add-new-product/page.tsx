@@ -1,0 +1,165 @@
+"use client";
+import { RiSave2Line } from "@remixicon/react";
+import Link from "next/link";
+import React, { useState } from "react";
+import axios from "axios";
+import AlertPopup from "@/app/_components/layout/global/AlertPopup";
+import { ProductI } from "@/app/_types/Product";
+
+// interface FormErrors {
+//     title?: { error: string };
+//     author?: { error: string };
+//     image?: { error: string };
+//     isbn?: { error: string };
+//     category?: { error: string };
+//     status?: { error: string };
+//     yearOfPublication?: { error: string };
+//     description?: { error: string };
+// }
+
+export default function AddNewProduct() {
+    const [newProductData, setNewProductData] = useState<ProductI>({
+        name: "",
+        sku: "",
+        description: "",
+        category: "",
+        price: "",
+        quantity: "",
+    });
+    // const [formErrors, setFormErros] = useState<FormErrors | null>(null);
+    // const [successMessage, setSuccessMessage] = useState<null | string>(null);
+    // const [errorMessage, setErrorMessage] = useState<null | string>(null);
+
+    function handleChange(e: React.ChangeEvent<HTMLInputElement>): void {
+        setNewProductData((prevData: ProductI) => ({
+            ...prevData,
+            [e.target.name]: e.target.value,
+        }));
+    }
+
+    async function handleSaveProduct(
+        e: React.SubmitEvent<HTMLFormElement>
+    ): Promise<void> {
+        e.preventDefault();
+    }
+
+    return (
+        <div className="py-8">
+            <div className="flex flex-col justify-start items-start gap-6">
+                <section>
+                    <div className="breadcrumbs text-sm">
+                        <ul>
+                            <li>
+                                <Link href="/">Dashboard</Link>
+                            </li>
+
+                            <li>Add New Product</li>
+                        </ul>
+                    </div>
+                </section>
+                <section className="self-stretch flex flex-col justify-start items-start gap-2">
+                    <div className="self-stretch flex flex-col justify-start items-start">
+                        <h1 className="self-stretch justify-center text-zinc-900 text-4xl font-bold font-['Inter'] leading-10">
+                            Add New Product to Catalog
+                        </h1>
+                    </div>
+                </section>
+                <form
+                    onSubmit={handleSaveProduct}
+                    className="bg-white w-full p-6 border border-[#C7C4D8] flex flex-col gap-5 rounded-md"
+                >
+                    <div className="flex justify-between">
+                        <fieldset className="fieldset w-[49%]">
+                            <legend className="fieldset-legend">
+                                Product Name
+                            </legend>
+                            <input
+                                type="text"
+                                className="input w-full"
+                                placeholder="e.g. Julian Vayne"
+                                name="name"
+                                value={newProductData.name}
+                                onChange={handleChange}
+                            />
+                            {/* <p className="text-[#F44336] text-sm mt-2">
+                                {formErrors?.name &&
+                                    `* ${formErrors.name.error}`}
+                            </p> */}
+                        </fieldset>
+                        <fieldset className="fieldset w-[49%]">
+                            <legend className="fieldset-legend">
+                                SKU (reference)
+                            </legend>
+                            <input
+                                type="text"
+                                className="input w-full"
+                                placeholder="Enter the SKU of the product"
+                                name="sku"
+                                value={newProductData.sku}
+                                onChange={handleChange}
+                            />
+                            {/* <p className="text-[#F44336] text-sm mt-2">
+                                {formErrors?.sku &&
+                                    `* ${formErrors.sku.error}`}
+                            </p> */}
+                        </fieldset>
+                    </div>
+                    <div className="flex justify-between">
+                        <fieldset className="fieldset w-[49%]">
+                            <legend className="fieldset-legend">
+                                Description
+                            </legend>
+                            <input
+                                type="text"
+                                className="input w-full"
+                                placeholder="e.g. A brief description of the product"
+                                name="description"
+                                value={newProductData.description}
+                                onChange={handleChange}
+                            />
+                            {/* <p className="text-[#F44336] text-sm mt-2">
+                                {formErrors?.description &&
+                                    `* ${formErrors.description.error}`}
+                            </p> */}
+                        </fieldset>
+                        <fieldset className="fieldset w-[49%]">
+                            <legend className="fieldset-legend">
+                                Category
+                            </legend>
+                            <input
+                                type="text"
+                                className="input w-full"
+                                placeholder="e.g. Electronics"
+                                name="category"
+                                value={newProductData.category}
+                                onChange={handleChange}
+                            />
+                            {/* <p className="text-[#F44336] text-sm mt-2">
+                                {formErrors?.category &&
+                                    `* ${formErrors.category.error}`}
+                            </p> */}
+                        </fieldset>
+                    </div>
+
+                    <div className="self-stretch pt-4 mt-4 border-t border-slate-300 inline-flex justify-end items-center gap-4">
+                        <button className="size- px-8 py-2.5 bg-indigo-700 rounded-lg shadow-[0px_1px_2px_0px_rgba(0,0,0,0.05)] flex justify-start items-center gap-2 cursor-pointer">
+                            <div className="size- inline-flex flex-col justify-start items-center">
+                                <RiSave2Line className="text-white" />
+                            </div>
+                            <div className="text-center justify-center text-white text-sm font-medium font-['Inter'] leading-5">
+                                Save Product
+                            </div>
+                        </button>
+                    </div>
+                </form>
+            </div>
+            {/* {errorMessage && (
+                <AlertPopup
+                    isSuccess={false}
+                    message={errorMessage}
+                    setMessage={setErrorMessage}
+                />
+            )} */}
+        </div>
+    );
+}
