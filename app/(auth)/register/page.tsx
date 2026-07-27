@@ -89,6 +89,7 @@ export default function Register() {
             <form
                 onSubmit={handleSubmit}
                 className="self-stretch p-8 flex flex-col justify-start items-start gap-4"
+                aria-label="Register Form"
             >
                 <div className="self-stretch flex flex-col justify-start items-start gap-1">
                     <fieldset className="w-full">
