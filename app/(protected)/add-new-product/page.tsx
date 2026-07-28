@@ -3,7 +3,7 @@ import { RiSave2Line } from "@remixicon/react";
 import Link from "next/link";
 import React, { useState } from "react";
 import axios from "axios";
-import AlertPopup from "@/app/_components/layout/global/AlertPopup";
+import AlertPopup from "@/app/_components/global/AlertPopup";
 import { ProductI } from "@/app/_types/Product";
 
 interface FormErrors {
@@ -174,7 +174,7 @@ export default function AddNewProduct() {
                     </div>
 
                     <div className="self-stretch pt-4 mt-4 border-t border-slate-300 inline-flex justify-end items-center gap-4">
-                        <button className="size- px-8 py-2.5 bg-indigo-700 rounded-lg shadow-[0px_1px_2px_0px_rgba(0,0,0,0.05)] flex justify-start items-center gap-2 cursor-pointer">
+                        <button className="size- px-8 py-2.5 bg-black rounded-lg shadow-[0px_1px_2px_0px_rgba(0,0,0,0.05)] flex justify-start items-center gap-2 cursor-pointer">
                             <div className="size- inline-flex flex-col justify-start items-center">
                                 <RiSave2Line className="text-white" />
                             </div>

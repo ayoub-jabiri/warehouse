@@ -1,5 +1,5 @@
 "use client";
-import AlertPopup from "@/app/_components/layout/global/AlertPopup";
+import AlertPopup from "@/app/_components/global/AlertPopup";
 import { UserI } from "@/app/_types/User";
 import { RiArrowRightLongLine } from "@remixicon/react";
 import axios from "axios";
