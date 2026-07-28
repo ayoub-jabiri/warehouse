@@ -6,16 +6,14 @@ import axios from "axios";
 import AlertPopup from "@/app/_components/layout/global/AlertPopup";
 import { ProductI } from "@/app/_types/Product";
 
-// interface FormErrors {
-//     title?: { error: string };
-//     author?: { error: string };
-//     image?: { error: string };
-//     isbn?: { error: string };
-//     category?: { error: string };
-//     status?: { error: string };
-//     yearOfPublication?: { error: string };
-//     description?: { error: string };
-// }
+interface FormErrors {
+    name?: { error: string };
+    sku?: { error: string };
+    description?: { error: string };
+    category?: { error: string };
+    price?: { error: string };
+    quantity?: { error: string };
+}
 
 export default function AddNewProduct() {
     const [newProductData, setNewProductData] = useState<ProductI>({
@@ -137,6 +135,40 @@ export default function AddNewProduct() {
                             {/* <p className="text-[#F44336] text-sm mt-2">
                                 {formErrors?.category &&
                                     `* ${formErrors.category.error}`}
+                            </p> */}
+                        </fieldset>
+                    </div>
+                    <div className="flex justify-between">
+                        <fieldset className="fieldset w-[49%]">
+                            <legend className="fieldset-legend">Price</legend>
+                            <input
+                                type="text"
+                                className="input w-full"
+                                placeholder="e.g. 19.99"
+                                name="price"
+                                value={newProductData.price}
+                                onChange={handleChange}
+                            />
+                            {/* <p className="text-[#F44336] text-sm mt-2">
+                                {formErrors?.price &&
+                                    `* ${formErrors.price.error}`}
+                            </p> */}
+                        </fieldset>
+                        <fieldset className="fieldset w-[49%]">
+                            <legend className="fieldset-legend">
+                                Quantity
+                            </legend>
+                            <input
+                                type="text"
+                                className="input w-full"
+                                placeholder="e.g. 100"
+                                name="quantity"
+                                value={newProductData.quantity}
+                                onChange={handleChange}
+                            />
+                            {/* <p className="text-[#F44336] text-sm mt-2">
+                                {formErrors?.quantity &&
+                                    `* ${formErrors.quantity.error}`}
                             </p> */}
                         </fieldset>
                     </div>
