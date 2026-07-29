@@ -7,7 +7,13 @@ export async function proxy(req: NextRequest) {
 
     const session = await getServerSession(authOptions);
 
-    if (req.nextUrl.pathname == "/dashboard" && !session?.user) {
+    if (
+        (req.nextUrl.pathname == "/dashboard" ||
+            req.nextUrl.pathname == "/products" ||
+            req.nextUrl.pathname == "/add-new-product" ||
+            req.nextUrl.pathname == "/categories") &&
+        !session?.user
+    ) {
         return NextResponse.redirect(new URL("/login", req.url));
     }
 

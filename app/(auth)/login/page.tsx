@@ -4,7 +4,7 @@ import Link from "next/link";
 import { signIn } from "next-auth/react";
 import { useState } from "react";
 import { redirect } from "next/navigation";
-import AlertPopup from "@/app/_components/layout/global/AlertPopup";
+import AlertPopup from "@/app/_components/global/AlertPopup";
 
 export default function Login() {
     const [formData, setFormData] = useState<{

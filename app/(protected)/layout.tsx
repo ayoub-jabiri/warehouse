@@ -11,7 +11,9 @@ export default function DashboardLayout({
         <div>
             <SessionProvider>
                 <AppHeader />
-                <main className="px-10">{children}</main>
+                <main className="min-h-[calc(100vh-60px)] px-10">
+                    {children}
+                </main>
             </SessionProvider>
         </div>
     );
