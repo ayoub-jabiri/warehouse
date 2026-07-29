@@ -11,7 +11,7 @@ export default function AppHeader() {
     const navLinks = [
         { title: "Dashboard", href: "/dashboard", isActive: false },
         { title: "Products", href: "/products", isActive: false },
-        { title: "Orders", href: "/orders", isActive: false },
+        { title: "Categories", href: "/categories", isActive: false },
         { title: "Reports", href: "/reports", isActive: false },
     ];
 

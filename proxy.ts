@@ -10,7 +10,8 @@ export async function proxy(req: NextRequest) {
     if (
         (req.nextUrl.pathname == "/dashboard" ||
             req.nextUrl.pathname == "/products" ||
-            req.nextUrl.pathname == "/add-new-product") &&
+            req.nextUrl.pathname == "/add-new-product" ||
+            req.nextUrl.pathname == "/categories") &&
         !session?.user
     ) {
         return NextResponse.redirect(new URL("/login", req.url));
