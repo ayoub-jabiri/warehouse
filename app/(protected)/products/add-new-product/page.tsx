@@ -50,6 +50,9 @@ export default function AddNewProduct() {
                             <li>
                                 <Link href="/">Dashboard</Link>
                             </li>
+                            <li>
+                                <Link href="/products">Products</Link>
+                            </li>
 
                             <li>Add New Product</li>
                         </ul>

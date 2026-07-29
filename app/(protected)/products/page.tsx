@@ -44,7 +44,7 @@ export default function Products() {
                             <Link href="/">Dashboard</Link>
                         </li>
 
-                        <li>Add New Product</li>
+                        <li>Products</li>
                     </ul>
                 </div>
             </section>
@@ -62,7 +62,7 @@ export default function Products() {
                 </div>
                 <div className="flex items-center gap-4">
                     <Link
-                        href="/add-new-product"
+                        href="/products/add-new-product"
                         className="px-8 py-2.5 bg-black flex items-center gap-2 text-white text-sm font-medium tracking-tight"
                     >
                         <RiAddLine />
