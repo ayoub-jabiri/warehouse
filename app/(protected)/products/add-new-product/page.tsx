@@ -1,7 +1,7 @@
 "use client";
 import { RiSave2Line } from "@remixicon/react";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import AlertPopup from "@/app/_components/global/AlertPopup";
 import { ProductI } from "@/app/_types/Product";
@@ -24,21 +24,71 @@ export default function AddNewProduct() {
         price: "",
         quantity: "",
     });
-    // const [formErrors, setFormErros] = useState<FormErrors | null>(null);
-    // const [successMessage, setSuccessMessage] = useState<null | string>(null);
-    // const [errorMessage, setErrorMessage] = useState<null | string>(null);
+    const [categoryOptions, setCategoryOptions] = useState<string[]>([]);
+    const [formErrors, setFormErros] = useState<FormErrors | null>(null);
+    const [successMessage, setSuccessMessage] = useState<null | string>(null);
+    const [errorMessage, setErrorMessage] = useState<null | string>(null);
 
-    function handleChange(e: React.ChangeEvent<HTMLInputElement>): void {
+    function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
         setNewProductData((prevData: ProductI) => ({
             ...prevData,
             [e.target.name]: e.target.value,
         }));
     }
 
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const { data } = await axios.get("/api/categories");
+                setCategoryOptions(
+                    data.categories.map(
+                        (category: { name: string }) => category.name
+                    )
+                );
+            } catch (error) {
+                console.error("Error fetching categories:", error);
+            }
+        };
+
+        fetchCategories();
+    }, []);
+
     async function handleSaveProduct(
         e: React.SubmitEvent<HTMLFormElement>
     ): Promise<void> {
         e.preventDefault();
+
+        try {
+            const { data } = await axios.post(`/api/products`, newProductData);
+
+            setSuccessMessage(data.message);
+            setFormErros(null);
+            setNewProductData({
+                name: "",
+                sku: "",
+                description: "",
+                category: "",
+                price: "",
+                quantity: "",
+            });
+        } catch (error) {
+            console.error("Error saving product:", error.response);
+            if (error.response?.data?.errors) {
+                const errors: FormErrors = {};
+
+                error.response?.data?.errors.map((error) => {
+                    errors[error.path[0]] = {
+                        error: error.message,
+                    };
+                });
+
+                setFormErros(errors);
+            }
+
+            setErrorMessage(
+                error.response?.data?.message || "Something went wrong!"
+            );
+        }
     }
 
     return (
@@ -49,6 +99,9 @@ export default function AddNewProduct() {
                         <ul>
                             <li>
                                 <Link href="/">Dashboard</Link>
+                            </li>
+                            <li>
+                                <Link href="/products">Products</Link>
                             </li>
 
                             <li>Add New Product</li>
@@ -74,15 +127,15 @@ export default function AddNewProduct() {
                             <input
                                 type="text"
                                 className="input w-full"
-                                placeholder="e.g. Julian Vayne"
+                                placeholder="Enter the product name"
                                 name="name"
                                 value={newProductData.name}
                                 onChange={handleChange}
                             />
-                            {/* <p className="text-[#F44336] text-sm mt-2">
+                            <p className="text-[#F44336] text-sm mt-2">
                                 {formErrors?.name &&
                                     `* ${formErrors.name.error}`}
-                            </p> */}
+                            </p>
                         </fieldset>
                         <fieldset className="fieldset w-[49%]">
                             <legend className="fieldset-legend">
@@ -96,10 +149,9 @@ export default function AddNewProduct() {
                                 value={newProductData.sku}
                                 onChange={handleChange}
                             />
-                            {/* <p className="text-[#F44336] text-sm mt-2">
-                                {formErrors?.sku &&
-                                    `* ${formErrors.sku.error}`}
-                            </p> */}
+                            <p className="text-[#F44336] text-sm mt-2">
+                                {formErrors?.sku && `* ${formErrors.sku.error}`}
+                            </p>
                         </fieldset>
                     </div>
                     <div className="flex justify-between">
@@ -110,32 +162,39 @@ export default function AddNewProduct() {
                             <input
                                 type="text"
                                 className="input w-full"
-                                placeholder="e.g. A brief description of the product"
+                                placeholder="Enter the product description"
                                 name="description"
                                 value={newProductData.description}
                                 onChange={handleChange}
                             />
-                            {/* <p className="text-[#F44336] text-sm mt-2">
+                            <p className="text-[#F44336] text-sm mt-2">
                                 {formErrors?.description &&
                                     `* ${formErrors.description.error}`}
-                            </p> */}
+                            </p>
                         </fieldset>
                         <fieldset className="fieldset w-[49%]">
                             <legend className="fieldset-legend">
                                 Category
                             </legend>
-                            <input
-                                type="text"
-                                className="input w-full"
-                                placeholder="e.g. Electronics"
+                            <select
+                                className="select w-full"
                                 name="category"
                                 value={newProductData.category}
                                 onChange={handleChange}
-                            />
-                            {/* <p className="text-[#F44336] text-sm mt-2">
+                            >
+                                <option value="" disabled>
+                                    The product category
+                                </option>
+                                {categoryOptions.map((category) => (
+                                    <option key={category} value={category}>
+                                        {category}
+                                    </option>
+                                ))}
+                            </select>
+                            <p className="text-[#F44336] text-sm mt-2">
                                 {formErrors?.category &&
                                     `* ${formErrors.category.error}`}
-                            </p> */}
+                            </p>
                         </fieldset>
                     </div>
                     <div className="flex justify-between">
@@ -149,10 +208,10 @@ export default function AddNewProduct() {
                                 value={newProductData.price}
                                 onChange={handleChange}
                             />
-                            {/* <p className="text-[#F44336] text-sm mt-2">
+                            <p className="text-[#F44336] text-sm mt-2">
                                 {formErrors?.price &&
                                     `* ${formErrors.price.error}`}
-                            </p> */}
+                            </p>
                         </fieldset>
                         <fieldset className="fieldset w-[49%]">
                             <legend className="fieldset-legend">
@@ -166,10 +225,10 @@ export default function AddNewProduct() {
                                 value={newProductData.quantity}
                                 onChange={handleChange}
                             />
-                            {/* <p className="text-[#F44336] text-sm mt-2">
+                            <p className="text-[#F44336] text-sm mt-2">
                                 {formErrors?.quantity &&
                                     `* ${formErrors.quantity.error}`}
-                            </p> */}
+                            </p>
                         </fieldset>
                     </div>
 
@@ -185,13 +244,20 @@ export default function AddNewProduct() {
                     </div>
                 </form>
             </div>
-            {/* {errorMessage && (
+            {successMessage && (
+                <AlertPopup
+                    isSuccess={true}
+                    message={successMessage}
+                    setMessage={setSuccessMessage}
+                />
+            )}
+            {errorMessage && (
                 <AlertPopup
                     isSuccess={false}
                     message={errorMessage}
                     setMessage={setErrorMessage}
                 />
-            )} */}
+            )}
         </div>
     );
 }
