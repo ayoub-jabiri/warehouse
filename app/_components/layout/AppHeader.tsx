@@ -12,7 +12,7 @@ export default function AppHeader() {
         { title: "Dashboard", href: "/dashboard", isActive: false },
         { title: "Products", href: "/products", isActive: false },
         { title: "Categories", href: "/categories", isActive: false },
-        { title: "Reports", href: "/reports", isActive: false },
+        { title: "Movements", href: "/movements", isActive: false },
     ];
 
     navLinks.forEach((link: NavLink) => {

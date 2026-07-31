@@ -5,7 +5,6 @@ import React, { useState } from "react";
 import axios from "axios";
 import AlertPopup from "@/app/_components/global/AlertPopup";
 import { type CategoryI } from "@/app/_types/Category";
-import { set } from "mongoose";
 
 interface FormErrors {
     name?: { error: string };
