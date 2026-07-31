@@ -1,4 +1,5 @@
 "use client";
+import AlertPopup from "@/app/_components/global/AlertPopup";
 import { type MovementI } from "@/app/_types/Movement";
 import { type ProductI } from "@/app/_types/Product";
 import { RiCheckLine } from "@remixicon/react";
@@ -48,7 +49,37 @@ export default function Movements() {
     ): Promise<void> {
         e.preventDefault();
 
-        console.log(newMovementData);
+        try {
+            const { data } = await axios.post(
+                "/api/movements",
+                newMovementData
+            );
+            setSuccessMessage(data.message);
+            setErrorMessage(null);
+            setFormErros(null);
+            setNewMovementData({
+                productId: "",
+                quantity: "",
+                movementType: "",
+            });
+        } catch (error) {
+            console.error("Error saving product:", error.response);
+            if (error.response?.data?.errors) {
+                const errors: FormErrors = {};
+
+                error.response?.data?.errors.map((error) => {
+                    errors[error.path[0]] = {
+                        error: error.message,
+                    };
+                });
+
+                setFormErros(errors);
+            }
+
+            setErrorMessage(
+                error.response?.data?.message || "Something went wrong!"
+            );
+        }
     }
 
     return (
@@ -221,6 +252,20 @@ export default function Movements() {
                     </div>
                 </div>
             </div>
+            {successMessage && (
+                <AlertPopup
+                    isSuccess={true}
+                    message={successMessage}
+                    setMessage={setSuccessMessage}
+                />
+            )}
+            {errorMessage && (
+                <AlertPopup
+                    isSuccess={false}
+                    message={errorMessage}
+                    setMessage={setErrorMessage}
+                />
+            )}
         </div>
     );
 }
