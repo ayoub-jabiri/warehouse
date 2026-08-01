@@ -63,7 +63,6 @@ export default function Movements() {
                 movementType: "",
             });
         } catch (error) {
-            console.error("Error saving product:", error.response);
             if (error.response?.data?.errors) {
                 const errors: FormErrors = {};
 
@@ -109,149 +108,159 @@ export default function Movements() {
                 </div>
             </div>
 
+            {!products.length && (
+                <div className="col-span-12 h-[200px] flex justify-center items-center">
+                    <p>No Products to register movements on!</p>
+                </div>
+            )}
+
             {/* Main Content Grid */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                {/* Left / Main Form Panel */}
-                <div className="lg:col-span-2 p-8 bg-white shadow-sm border border-neutral-300 flex flex-col gap-6">
-                    {/* Form Inputs Grid */}
-                    <form
-                        onSubmit={handleSaveMovement}
-                        className="bg-white w-full p-6 border border-[#C7C4D8] flex flex-col gap-5 rounded-md"
-                    >
-                        <fieldset className="fieldset">
-                            <legend className="fieldset-legend">
-                                Movement Type
-                            </legend>
-                            <select
-                                className="select w-full"
-                                name="movementType"
-                                value={newMovementData.movementType}
-                                onChange={handleChange}
-                            >
-                                <option value="" disabled>
-                                    The movement type
-                                </option>
-                                <option value="entrance">Entrance</option>
-                                <option value="exit">Exit</option>
-                            </select>
-                            <p className="text-[#F44336] text-sm mt-2">
-                                {formErrors?.movementType &&
-                                    `* ${formErrors.movementType.error}`}
-                            </p>
-                        </fieldset>
-                        <div className="flex justify-between">
-                            <fieldset className="fieldset w-[49%]">
+            {products.length > 0 && (
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    {/* Left / Main Form Panel */}
+                    <div className="lg:col-span-2 p-8 bg-white shadow-sm border border-neutral-300 flex flex-col gap-6">
+                        {/* Form Inputs Grid */}
+                        <form
+                            onSubmit={handleSaveMovement}
+                            className="bg-white w-full p-6 border border-[#C7C4D8] flex flex-col gap-5 rounded-md"
+                        >
+                            <fieldset className="fieldset">
                                 <legend className="fieldset-legend">
-                                    Product
+                                    Movement Type
                                 </legend>
                                 <select
                                     className="select w-full"
-                                    name="productId"
-                                    value={newMovementData.productId}
+                                    name="movementType"
+                                    value={newMovementData.movementType}
                                     onChange={handleChange}
                                 >
                                     <option value="" disabled>
-                                        The product
+                                        The movement type
                                     </option>
-                                    {products.map((product) => (
-                                        <option
-                                            key={product.id}
-                                            value={product.id}
-                                        >
-                                            {product.name}
-                                        </option>
-                                    ))}
+                                    <option value="entrance">Entrance</option>
+                                    <option value="exit">Exit</option>
                                 </select>
                                 <p className="text-[#F44336] text-sm mt-2">
-                                    {formErrors?.productId &&
-                                        `* ${formErrors.productId.error}`}
+                                    {formErrors?.movementType &&
+                                        `* ${formErrors.movementType.error}`}
                                 </p>
                             </fieldset>
-                            <fieldset className="fieldset w-[49%]">
-                                <legend className="fieldset-legend">
-                                    Quantity
-                                </legend>
-                                <input
-                                    type="text"
-                                    className="input w-full"
-                                    placeholder="0.00"
-                                    name="quantity"
-                                    value={newMovementData.quantity}
-                                    onChange={handleChange}
-                                />
-                                <p className="text-[#F44336] text-sm mt-2">
-                                    {formErrors?.quantity &&
-                                        `* ${formErrors.quantity.error}`}
-                                </p>
-                            </fieldset>
-                        </div>
-                        <div className="flex justify-end pt-4">
-                            <button className="px-8 py-2 bg-amber-800 hover:bg-amber-900 text-white text-sm font-normal uppercase tracking-widest flex items-center gap-3 transition-colors cursor-pointer">
-                                <RiCheckLine />
-                                CONFIRM SHIPMENT
-                            </button>
-                        </div>
-                    </form>
-                </div>
+                            <div className="flex justify-between">
+                                <fieldset className="fieldset w-[49%]">
+                                    <legend className="fieldset-legend">
+                                        Product
+                                    </legend>
+                                    <select
+                                        className="select w-full"
+                                        name="productId"
+                                        value={newMovementData.productId}
+                                        onChange={handleChange}
+                                    >
+                                        <option value="" disabled>
+                                            The product
+                                        </option>
+                                        {products.map((product) => (
+                                            <option
+                                                key={product.id}
+                                                value={product.id}
+                                            >
+                                                {product.name}
+                                            </option>
+                                        ))}
+                                    </select>
+                                    <p className="text-[#F44336] text-sm mt-2">
+                                        {formErrors?.productId &&
+                                            `* ${formErrors.productId.error}`}
+                                    </p>
+                                </fieldset>
+                                <fieldset className="fieldset w-[49%]">
+                                    <legend className="fieldset-legend">
+                                        Quantity
+                                    </legend>
+                                    <input
+                                        type="text"
+                                        className="input w-full"
+                                        placeholder="0.00"
+                                        name="quantity"
+                                        value={newMovementData.quantity}
+                                        onChange={handleChange}
+                                    />
+                                    <p className="text-[#F44336] text-sm mt-2">
+                                        {formErrors?.quantity &&
+                                            `* ${formErrors.quantity.error}`}
+                                    </p>
+                                </fieldset>
+                            </div>
+                            <div className="flex justify-end pt-4">
+                                <button className="px-8 py-2 bg-amber-800 hover:bg-amber-900 text-white text-sm font-normal uppercase tracking-widest flex items-center gap-3 transition-colors cursor-pointer">
+                                    <RiCheckLine />
+                                    CONFIRM SHIPMENT
+                                </button>
+                            </div>
+                        </form>
+                    </div>
 
-                {/* Right Sidebar */}
-                <div className="flex flex-col gap-6">
-                    {/* Recent Movement Logs */}
-                    <div className="p-4 bg-gray-200 border border-neutral-300 flex flex-col gap-4">
-                        <div className="flex items-center gap-2">
-                            <span className="size-2.5 bg-zinc-700" />
-                            <span className="text-zinc-700 text-xs font-medium uppercase tracking-wide">
-                                RECENT MOVEMENT LOGS
-                            </span>
-                        </div>
-
-                        <div className="flex flex-col gap-2">
-                            {/* Log Item 1 */}
-                            <div className="p-3 bg-white border border-neutral-300 flex flex-col gap-1">
-                                <div className="flex justify-between items-center text-xs">
-                                    <span className="text-amber-800">
-                                        + ENTRANCE
-                                    </span>
-                                    <span className="text-zinc-700 text-[10px]">
-                                        14:22 PM
-                                    </span>
-                                </div>
-                                <span className="text-zinc-900 text-base">
-                                    SKU-441-A • 500 Units
+                    {/* Right Sidebar */}
+                    <div className="flex flex-col gap-6">
+                        {/* Recent Movement Logs */}
+                        <div className="p-4 bg-gray-200 border border-neutral-300 flex flex-col gap-4">
+                            <div className="flex items-center gap-2">
+                                <span className="size-2.5 bg-zinc-700" />
+                                <span className="text-zinc-700 text-xs font-medium uppercase tracking-wide">
+                                    RECENT MOVEMENT LOGS
                                 </span>
                             </div>
 
-                            {/* Log Item 2 */}
-                            <div className="p-3 bg-white/60 border border-neutral-300 flex flex-col gap-1">
-                                <div className="flex justify-between items-center text-xs">
-                                    <span className="text-black">- EXIT</span>
-                                    <span className="text-zinc-700 text-[10px]">
-                                        12:05 PM
+                            <div className="flex flex-col gap-2">
+                                {/* Log Item 1 */}
+                                <div className="p-3 bg-white border border-neutral-300 flex flex-col gap-1">
+                                    <div className="flex justify-between items-center text-xs">
+                                        <span className="text-amber-800">
+                                            + ENTRANCE
+                                        </span>
+                                        <span className="text-zinc-700 text-[10px]">
+                                            14:22 PM
+                                        </span>
+                                    </div>
+                                    <span className="text-zinc-900 text-base">
+                                        SKU-441-A • 500 Units
                                     </span>
                                 </div>
-                                <span className="text-zinc-900 text-base">
-                                    SKU-129-C • 12 Units
-                                </span>
-                            </div>
 
-                            {/* Log Item 3 */}
-                            <div className="p-3 bg-white/60 border border-neutral-300 flex flex-col gap-1">
-                                <div className="flex justify-between items-center text-xs">
-                                    <span className="text-amber-800">
-                                        + ENTRANCE
-                                    </span>
-                                    <span className="text-zinc-700 text-[10px]">
-                                        09:14 AM
+                                {/* Log Item 2 */}
+                                <div className="p-3 bg-white/60 border border-neutral-300 flex flex-col gap-1">
+                                    <div className="flex justify-between items-center text-xs">
+                                        <span className="text-black">
+                                            - EXIT
+                                        </span>
+                                        <span className="text-zinc-700 text-[10px]">
+                                            12:05 PM
+                                        </span>
+                                    </div>
+                                    <span className="text-zinc-900 text-base">
+                                        SKU-129-C • 12 Units
                                     </span>
                                 </div>
-                                <span className="text-zinc-900 text-base">
-                                    SKU-882-X • 1,200 Units
-                                </span>
+
+                                {/* Log Item 3 */}
+                                <div className="p-3 bg-white/60 border border-neutral-300 flex flex-col gap-1">
+                                    <div className="flex justify-between items-center text-xs">
+                                        <span className="text-amber-800">
+                                            + ENTRANCE
+                                        </span>
+                                        <span className="text-zinc-700 text-[10px]">
+                                            09:14 AM
+                                        </span>
+                                    </div>
+                                    <span className="text-zinc-900 text-base">
+                                        SKU-882-X • 1,200 Units
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            )}
             {successMessage && (
                 <AlertPopup
                     isSuccess={true}
