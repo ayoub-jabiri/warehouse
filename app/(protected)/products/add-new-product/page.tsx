@@ -115,134 +115,144 @@ export default function AddNewProduct() {
                         </h1>
                     </div>
                 </section>
-                <form
-                    onSubmit={handleSaveProduct}
-                    className="bg-white w-full p-6 border border-[#C7C4D8] flex flex-col gap-5 rounded-md"
-                >
-                    <div className="flex justify-between">
-                        <fieldset className="fieldset w-[49%]">
-                            <legend className="fieldset-legend">
-                                Product Name
-                            </legend>
-                            <input
-                                type="text"
-                                className="input w-full"
-                                placeholder="Enter the product name"
-                                name="name"
-                                value={newProductData.name}
-                                onChange={handleChange}
-                            />
-                            <p className="text-[#F44336] text-sm mt-2">
-                                {formErrors?.name &&
-                                    `* ${formErrors.name.error}`}
-                            </p>
-                        </fieldset>
-                        <fieldset className="fieldset w-[49%]">
-                            <legend className="fieldset-legend">
-                                SKU (reference)
-                            </legend>
-                            <input
-                                type="text"
-                                className="input w-full"
-                                placeholder="Enter the SKU of the product"
-                                name="sku"
-                                value={newProductData.sku}
-                                onChange={handleChange}
-                            />
-                            <p className="text-[#F44336] text-sm mt-2">
-                                {formErrors?.sku && `* ${formErrors.sku.error}`}
-                            </p>
-                        </fieldset>
+                {!categoryOptions.length && (
+                    <div className="col-span-12 w-full h-[200px] flex justify-center items-center">
+                        <p>No categories available!</p>
                     </div>
-                    <div className="flex justify-between">
-                        <fieldset className="fieldset w-[49%]">
-                            <legend className="fieldset-legend">
-                                Description
-                            </legend>
-                            <input
-                                type="text"
-                                className="input w-full"
-                                placeholder="Enter the product description"
-                                name="description"
-                                value={newProductData.description}
-                                onChange={handleChange}
-                            />
-                            <p className="text-[#F44336] text-sm mt-2">
-                                {formErrors?.description &&
-                                    `* ${formErrors.description.error}`}
-                            </p>
-                        </fieldset>
-                        <fieldset className="fieldset w-[49%]">
-                            <legend className="fieldset-legend">
-                                Category
-                            </legend>
-                            <select
-                                className="select w-full"
-                                name="category"
-                                value={newProductData.category}
-                                onChange={handleChange}
-                            >
-                                <option value="" disabled>
-                                    The product category
-                                </option>
-                                {categoryOptions.map((category) => (
-                                    <option key={category} value={category}>
-                                        {category}
+                )}
+                {categoryOptions.length > 0 && (
+                    <form
+                        onSubmit={handleSaveProduct}
+                        className="bg-white w-full p-6 border border-[#C7C4D8] flex flex-col gap-5 rounded-md"
+                    >
+                        <div className="flex justify-between">
+                            <fieldset className="fieldset w-[49%]">
+                                <legend className="fieldset-legend">
+                                    Product Name
+                                </legend>
+                                <input
+                                    type="text"
+                                    className="input w-full"
+                                    placeholder="Enter the product name"
+                                    name="name"
+                                    value={newProductData.name}
+                                    onChange={handleChange}
+                                />
+                                <p className="text-[#F44336] text-sm mt-2">
+                                    {formErrors?.name &&
+                                        `* ${formErrors.name.error}`}
+                                </p>
+                            </fieldset>
+                            <fieldset className="fieldset w-[49%]">
+                                <legend className="fieldset-legend">
+                                    SKU (reference)
+                                </legend>
+                                <input
+                                    type="text"
+                                    className="input w-full"
+                                    placeholder="Enter the SKU of the product"
+                                    name="sku"
+                                    value={newProductData.sku}
+                                    onChange={handleChange}
+                                />
+                                <p className="text-[#F44336] text-sm mt-2">
+                                    {formErrors?.sku &&
+                                        `* ${formErrors.sku.error}`}
+                                </p>
+                            </fieldset>
+                        </div>
+                        <div className="flex justify-between">
+                            <fieldset className="fieldset w-[49%]">
+                                <legend className="fieldset-legend">
+                                    Description
+                                </legend>
+                                <input
+                                    type="text"
+                                    className="input w-full"
+                                    placeholder="Enter the product description"
+                                    name="description"
+                                    value={newProductData.description}
+                                    onChange={handleChange}
+                                />
+                                <p className="text-[#F44336] text-sm mt-2">
+                                    {formErrors?.description &&
+                                        `* ${formErrors.description.error}`}
+                                </p>
+                            </fieldset>
+                            <fieldset className="fieldset w-[49%]">
+                                <legend className="fieldset-legend">
+                                    Category
+                                </legend>
+                                <select
+                                    className="select w-full"
+                                    name="category"
+                                    value={newProductData.category}
+                                    onChange={handleChange}
+                                >
+                                    <option value="" disabled>
+                                        The product category
                                     </option>
-                                ))}
-                            </select>
-                            <p className="text-[#F44336] text-sm mt-2">
-                                {formErrors?.category &&
-                                    `* ${formErrors.category.error}`}
-                            </p>
-                        </fieldset>
-                    </div>
-                    <div className="flex justify-between">
-                        <fieldset className="fieldset w-[49%]">
-                            <legend className="fieldset-legend">Price</legend>
-                            <input
-                                type="text"
-                                className="input w-full"
-                                placeholder="e.g. 19.99"
-                                name="price"
-                                value={newProductData.price}
-                                onChange={handleChange}
-                            />
-                            <p className="text-[#F44336] text-sm mt-2">
-                                {formErrors?.price &&
-                                    `* ${formErrors.price.error}`}
-                            </p>
-                        </fieldset>
-                        <fieldset className="fieldset w-[49%]">
-                            <legend className="fieldset-legend">
-                                Quantity
-                            </legend>
-                            <input
-                                type="text"
-                                className="input w-full"
-                                placeholder="e.g. 100"
-                                name="quantity"
-                                value={newProductData.quantity}
-                                onChange={handleChange}
-                            />
-                            <p className="text-[#F44336] text-sm mt-2">
-                                {formErrors?.quantity &&
-                                    `* ${formErrors.quantity.error}`}
-                            </p>
-                        </fieldset>
-                    </div>
+                                    {categoryOptions.map((category) => (
+                                        <option key={category} value={category}>
+                                            {category}
+                                        </option>
+                                    ))}
+                                </select>
+                                <p className="text-[#F44336] text-sm mt-2">
+                                    {formErrors?.category &&
+                                        `* ${formErrors.category.error}`}
+                                </p>
+                            </fieldset>
+                        </div>
+                        <div className="flex justify-between">
+                            <fieldset className="fieldset w-[49%]">
+                                <legend className="fieldset-legend">
+                                    Price
+                                </legend>
+                                <input
+                                    type="text"
+                                    className="input w-full"
+                                    placeholder="e.g. 19.99"
+                                    name="price"
+                                    value={newProductData.price}
+                                    onChange={handleChange}
+                                />
+                                <p className="text-[#F44336] text-sm mt-2">
+                                    {formErrors?.price &&
+                                        `* ${formErrors.price.error}`}
+                                </p>
+                            </fieldset>
+                            <fieldset className="fieldset w-[49%]">
+                                <legend className="fieldset-legend">
+                                    Quantity
+                                </legend>
+                                <input
+                                    type="text"
+                                    className="input w-full"
+                                    placeholder="e.g. 100"
+                                    name="quantity"
+                                    value={newProductData.quantity}
+                                    onChange={handleChange}
+                                />
+                                <p className="text-[#F44336] text-sm mt-2">
+                                    {formErrors?.quantity &&
+                                        `* ${formErrors.quantity.error}`}
+                                </p>
+                            </fieldset>
+                        </div>
 
-                    <div className="self-stretch pt-4 mt-4 border-t border-slate-300 inline-flex justify-end items-center gap-4">
-                        <button className="size- px-8 py-2.5 bg-black rounded-lg shadow-[0px_1px_2px_0px_rgba(0,0,0,0.05)] flex justify-start items-center gap-2 cursor-pointer">
-                            <div className="size- inline-flex flex-col justify-start items-center">
-                                <RiSave2Line className="text-white" />
-                            </div>
-                            <div className="text-center justify-center text-white text-sm font-medium font-['Inter'] leading-5">
-                                Save Product
-                            </div>
-                        </button>
-                    </div>
-                </form>
+                        <div className="self-stretch pt-4 mt-4 border-t border-slate-300 inline-flex justify-end items-center gap-4">
+                            <button className="size- px-8 py-2.5 bg-black rounded-lg shadow-[0px_1px_2px_0px_rgba(0,0,0,0.05)] flex justify-start items-center gap-2 cursor-pointer">
+                                <div className="size- inline-flex flex-col justify-start items-center">
+                                    <RiSave2Line className="text-white" />
+                                </div>
+                                <div className="text-center justify-center text-white text-sm font-medium font-['Inter'] leading-5">
+                                    Save Product
+                                </div>
+                            </button>
+                        </div>
+                    </form>
+                )}
             </div>
             {successMessage && (
                 <AlertPopup
